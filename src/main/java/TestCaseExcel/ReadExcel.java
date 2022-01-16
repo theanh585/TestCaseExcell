@@ -84,23 +84,39 @@ public class ReadExcel {
 	
 	public static void WriteExcel() throws IOException {
 		
-		FileOutputStream file = new FileOutputStream("E:\\Master TestCase\\CELLO_Test_Report_20220117.xlsx");
-		XSSFWorkbook workbook = new XSSFWorkbook();
-		XSSFSheet workSheet = workbook.createSheet("Release_20220117_Report");
+		FileOutputStream file = new FileOutputStream("E:\\Master TestCase\\CELLO_Test_Report_20220117.xlsx", true);
+		XSSFWorkbook workbook = new XSSFWorkbook("E:\\Master TestCase\\CELLO_Test_Report_20220117.xlsx");
+		XSSFSheet workSheet = workbook.getSheetAt(0);
 		XSSFRow row;
 		XSSFCell cell;
 		
-			row = workSheet.createRow(9);
+		for(int i= 0; i < listTest.size() ; i++) {
+			row = workSheet.createRow(i + 30);
+			cell= row.createCell(3);
+			cell.setCellValue(i+1);
+			
 			cell= row.createCell(4);
-			cell.setCellValue(listTest.get(1).getTasks());
-		System.out.println(listTest.get(1).getTasks());
+			cell.setCellValue("Task_" + i);
+			
+			cell= row.createCell(5);
+			cell.setCellValue(listTest.get(i).getTasks());
+		
+			
+			cell= row.createCell(6);
+			cell.setCellValue(listTest.get(i).getDevTotal());
+			
+			cell= row.createCell(30);
+			cell.setCellValue(listTest.get(i).getBoth());
+		}
+		workbook.write(file);
 		workbook.close();
 		file.close();
 	}
 	
 	public static void main(String[] args) throws IOException {
 		ReadExcel();
-		System.out.println("dang ghi file");
+		System.out.println("writing file");
 		WriteExcel();
+		System.out.println("Complete");
 	}
 }
